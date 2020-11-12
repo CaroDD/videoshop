@@ -28,41 +28,17 @@ import javax.validation.constraints.NotEmpty;
 // http://docs.oracle.com/javaee/6/tutorial/doc/gircz.html
 // http://docs.jboss.org/hibernate/validator/4.2/reference/en-US/html/
 
-class RegistrationForm {
+class UsernameForm {
 
-	@NotEmpty(message = "{RegistrationForm.name.NotEmpty}") //
+	@NotEmpty(message = "{UsernameForm.name.NotEmpty}") //
 	private final String name;
 
-	@NotEmpty(message = "{RegistrationForm.password.NotEmpty}") //
-	private final String password;
-
-	@NotEmpty(message = "{RegistrationForm.address.NotEmpty}") // s
-	private final String address;
-	
-	@NotEmpty(message = "{RegistrationForm.email.NotEmpty}") //
-	private final String email;
-
-	public RegistrationForm(String name, String password, String address, String email) {
+	public UsernameForm(String name) {
 
 		this.name = name;
-		this.password = password;
-		this.address = address;
-		this.email = email;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public String getAddress() {
-		return address;
 	}
 }

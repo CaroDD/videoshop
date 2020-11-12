@@ -15,8 +15,12 @@
  */
 package videoshop.customer;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
+import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +65,7 @@ class CustomerController {
 		model.addAttribute("form", form);
 		return "register";
 	}
-
+	
 	@GetMapping("/customers")
 	@PreAuthorize("hasRole('BOSS')")
 	String customers(Model model) {

@@ -17,6 +17,7 @@ package videoshop.customer;
 
 import org.salespointframework.useraccount.Password.UnencryptedPassword;
 import org.salespointframework.useraccount.Role;
+import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class CustomerManagement {
 
 	private final CustomerRepository customers;
 	private final UserAccountManagement userAccounts;
+	private final JavaMailer mailSender;
 
 	/**
 	 * Creates a new {@link CustomerManagement} with the given {@link CustomerRepository} and
@@ -44,13 +46,14 @@ public class CustomerManagement {
 	 * @param customers must not be {@literal null}.
 	 * @param userAccounts must not be {@literal null}.
 	 */
-	CustomerManagement(CustomerRepository customers, UserAccountManagement userAccounts) {
+	CustomerManagement(CustomerRepository customers, UserAccountManagement userAccounts, JavaMailer mailSender) {
 
 		Assert.notNull(customers, "CustomerRepository must not be null!");
 		Assert.notNull(userAccounts, "UserAccountManagement must not be null!");
 
 		this.customers = customers;
 		this.userAccounts = userAccounts;
+		this.mailSender = mailSender;
 	}
 
 	/**
@@ -65,6 +68,9 @@ public class CustomerManagement {
 
 		var password = UnencryptedPassword.of(form.getPassword());
 		var userAccount = userAccounts.create(form.getName(), password, CUSTOMER_ROLE);
+		userAccount.setEmail(form.getEmail());
+		
+		mailSender.sendCustomerRegistrationMessage(form.getEmail());
 
 		return customers.save(new Customer(userAccount, form.getAddress()));
 	}
